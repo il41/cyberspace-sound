@@ -1,0 +1,335 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+
+    <!-- main a-frame library -->
+    <script src="https://aframe.io/releases/1.0.3/aframe.min.js"></script>
+
+    <!-- physics library -->
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-physics-system/v4.0.1/dist/aframe-physics-system.min.js"></script>
+
+    <!-- particle system library -->
+    <script src="https://unpkg.com/aframe-particle-system-component@1.0.x/dist/aframe-particle-system-component.min.js"></script>
+
+    <!-- environment library -->
+    <script src="https://unpkg.com/aframe-environment-component@1.1.0/dist/aframe-environment-component.min.js"></script>
+
+    <!-- text geometry library -->
+    <script src="https://unpkg.com/aframe-text-geometry-component@0.5.1/dist/aframe-text-geometry-component.min.js"></script>
+
+    <!-- extras library -->
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.0/dist/aframe-extras.min.js"></script>
+    <!-- event set library -->
+    <script src="https://unpkg.com/aframe-event-set-component@3.0.3/dist/aframe-event-set-component.min.js"></script>
+
+    <script src="http://ilai.link/js/p5.min.js"></script>
+    <script src="http://ilai.link/js/p5.sound.min.js"></script>
+  </head>
+  <style media="screen">
+    video{
+      mix-blend-mode: color-dodge;
+    }
+  </style>
+  <body>
+    <a-scene>
+      <!-- <a-scene physics> -->
+      <a-assets>
+        <!-- <img id="skyTexture" src="images/starmap.jpg"> -->
+        <!-- <img id="io" src="images/io.jpg"> -->
+        <!-- <video id="city" autoplay loop="true" src="video/city.mp4"></video> -->
+        <!-- <video id="mountain" autoplay loop="true" src="video/mountain.mp4"></video> -->
+        <!-- <video id="connect" autoplay loop="true" src="connect2.mp4"></video> -->
+        <!-- <a-asset-item id="il-obj" src="models/il.obj"></a-asset-item> -->
+        <!-- <a-asset-item id="il-mtl" src="models/il.mtl"></a-asset-item> -->
+      </a-assets>
+
+      </a-entity>
+
+      <a-entity id="cameraRig" movement-controls
+      position="0 0 0"
+      rotation="0 180 0"
+      animation="property:position;
+      startEvents:false;
+      loop: true;
+      dir:alternate;
+      to:0 0 300;
+      dur:10000;
+      easing:linear;
+      ">
+        <a-camera look-controls position="0 1.6 0">
+          <a-cursor></a-cursor>
+        </a-camera>
+      </a-entity>
+
+      <a-sky src="#connect" color="#3a8ef5"
+      animation="property: rotation;
+           to: 0 0 360;
+           dur: 150000;
+           easing: linear;
+           loop: true;">
+      </a-sky>
+
+      <!-- <a-entity
+        geometry="primitive: sphere;"
+        obj-model="obj: #il-obj"
+        radius = "1;"
+        position="0 3 -4;"
+        material="src: #io"
+        animation="property: rotation;
+             to: 0 0 0;
+             dur: 15000;
+             easing: linear;
+             loop: true;">
+      </a-entity> -->
+
+
+      <!-- <a-entity
+        obj-model="obj: #il-obj; mtl: #il-mtl"
+        position="0 1.5 -4"
+        rotation="0 0 0"
+        scale="1 1 1">
+      </a-entity> -->
+
+      <!-- <a-entity
+        static-body
+        geometry="primitive:plane;"
+        rotation="-90 0 0"
+        position="0.2 -0.2 -4"
+        material="color:#3133e0"
+        scale="100 100 100"
+        >
+      </a-entity> -->
+
+<!--
+      <a-entity dynamic-body
+        geometry="primitive:sphere;"
+        position="0 1.5 -4"
+        rotation="0 0 0"
+        scale="1 1 1">
+      </a-entity> -->
+<!-- <a-entity environment="preset: tron"></a-entity> -->
+
+      <!-- <a-entity
+        animation="property:rotation;
+                   autoplay:false;
+                   to:0 360 0;
+                   dur:5000;
+                   easing:linear;
+                   loop:true;"
+        color="#ccc"
+        position="0 3.21968 -6.90472"
+        align="center"
+        scale="0.1 0.1 0.1"
+        text-geometry="value:lock rushed connected to soul needed the bottom not know wave mourned inside-out
+
+ is a river spiral incomplete for her ground feel ground object hurt liquid dark
+
+ inside-out open electricity faint fading
+ branches with her lock in you evil deep
+
+ full loose winning
+ her sediment to image fun is a sunshine taking
+ solid lovely &amp; pleasant Land. "> -->
+ <a-entity
+   animation="property:rotation;
+              autoplay:false;
+              to:0 360 0;
+              dur:5000;
+              easing:linear;
+              loop:true;"
+   color="#ccc"
+   position="0 6.21968 -6.90472"
+   align="center"
+   scale="1 1 1"
+   text-geometry="value:www.ilai.link">
+      </a-text>
+
+    </a-scene>
+
+
+    <div id="delayTime"class="slidercont">
+      <span>delay time</span>
+    </div>
+    <div id="feedback"class="slidercont">
+      <span>feedback</span>
+    </div>
+    <div id="space"class="slidercont">
+      <span class="reverser" style="color:black;font-size:15px;">negative time?</span>
+      <input type="checkbox" onclick="reverser(this)"  autocomplete="off">
+      <span>space</span>
+    </div>
+    <div id="speed"class="slidercont">
+      <span>speed</span>
+    </div>
+
+
+    <script>
+      let osc;
+      let env;
+      let attackLevel = 0.1;
+      let releaseLevel = 0;
+      let attack = 0.03;
+      let decay = 0.23;
+      let sus = 0;
+      let release = 0.23;
+
+      let notes;
+      let octave=4;
+
+      let delay;
+      let delayTime;
+      let feedback;
+      let comp;
+      let reverse = 0;
+
+      let starter;
+
+      let spheres = [];
+      let spheres2 = [];
+      notes={
+          "C":   [16.35, 32.70, 65.41, 130.81, 261.63, 523.25, 1046.50, 2093.00, 4186.01],
+         "Db":   [17.32, 34.65, 69.30, 138.59, 277.18, 554.37, 1108.73, 2217.46, 4434.92],
+          "D":   [18.35, 36.71, 73.42, 146.83, 293.66, 587.33, 1174.66, 2349.32, 4698.64],
+         "Eb":   [19.45, 38.89, 77.78, 155.56, 311.13, 622.25, 1244.51, 2489.02, 4978.03],
+          "E":   [20.60, 41.20, 82.41, 164.81, 329.63, 659.26, 1318.51, 2637.02, 5274.04],
+          "F":   [21.83, 43.65, 87.31, 174.61, 349.23, 698.46, 1396.91, 2793.83, 5587.65],
+         "Gb":   [23.12, 46.25, 92.50, 185.00, 369.99, 739.99, 1479.98, 2959.96, 5919.91],
+          "G":   [24.50, 49.00, 98.00, 196.00, 392.00, 783.99, 1567.98, 3135.96, 6271.927],
+         "Ab":   [25.96, 51.91, 103.83, 207.65, 415.30, 830.61, 1661.22, 3322.44, 6644.87],
+          "A":   [27.50, 55.00, 110.00, 220.00, 440.00, 880.00, 1760.00, 3520.00, 7458.62],
+         "Bb":   [29.14, 58.27, 116.54, 233.08, 466.16, 932.33, 1864.66, 3729.31, 7040.00],
+          "B":   [30.87, 61.74, 123.47, 246.94, 493.88, 987.77, 1975.53, 3951.07, 7902.13]
+       }
+      function preload(){
+        notes=loadJSON("notes.json");
+        console.log(notes);
+
+      }
+
+      function setup(){
+          delayTime=createSlider(100, 1000, 500);
+          delayTime.addClass('slider');
+          let delaycont=document.getElementById('delayTime');
+          delayTime.parent(delaycont);
+
+          feedback=createSlider(000, 900, 500);
+          feedback.addClass('slider');
+          let feedbackcont=document.getElementById('feedback');
+          feedback.parent(feedbackcont);
+
+          space=createSlider(0, 10000, 0);
+          space.addClass('slider');
+          let spacecont=document.getElementById('space');
+          space.parent(spacecont);
+
+          speed=createSlider(1, 100000, 10000);
+          speed.addClass('slider');
+          let speedcont=document.getElementById('speed');
+          speed.parent(speedcont);
+
+          env = new p5.Envelope();
+          env.setADSR(attack, decay, sus, release);
+          env.setRange(attackLevel, releaseLevel);
+
+          osc = new p5.Oscillator();
+          osc.setType('sin');
+          osc.amp(env);
+          osc.start();
+          console.log(osc);
+
+          delay = new p5.Delay();
+          delay.process(osc, .7, .3, 20000);
+
+          reverb = new p5.Reverb();
+          reverb.process(osc, 3, 2, reverse);
+
+          starter=createDiv('start');
+          starter.addClass("starter");
+          starter.mouseClicked(start);
+
+      }
+      function draw(){
+          delay.delayTime(delayTime.value()/1000);
+          delay.feedback(feedback.value()/1000);
+          reverb.amp(space.value()/1000);
+
+          //audiocontext starter
+          if (getAudioContext().state !== 'running') {
+            textSize(30);
+            text('click blue to start', width/2, height/2);
+          } else {
+            text('', width/2, height/2);
+          }
+          rect(10,height/2-octave*10,10,10);
+      }
+      function start() {
+        if (getAudioContext().state !== 'running') {
+          getAudioContext().resume();
+        }
+      }
+      function playEnv(note)  {
+        env.play();
+      }
+
+
+      function triggerSphere(){
+        console.log('ow!');
+      }
+
+      function createSphere(){
+        let note=(Math.random()*(i*i))
+
+        let sphereEl = document.createElement('a-sphere');
+        let randomColor=Math.floor(16777215-i*(400)).toString(16);
+        sphereEl.setAttribute('radius', 0.12);
+        sphereEl.setAttribute('color', '#'+randomColor);
+        // sphereEl.object3D.position.set((Math.random()*20)-10, (Math.random()*24)-12, (Math.random()*26)-13);
+        sphereEl.object3D.position.set(Math.sin(i)*i/(i/2),(Math.cos(i)*i/(i/2))+2,i/10);
+        spheres.push(sphereEl);
+        document.querySelector('a-scene').appendChild(sphereEl);
+        sphereEl.setAttribute('event-set__enter','_event: mouseenter; color: #FFFFFF')
+        sphereEl.setAttribute('event-set__leave','_event: mouseleave; color: #4CC309')
+        // let note=(sphereEl.object3D.position.x*sphereEl.object3D.position.y*(1000));
+        sphereEl.addEventListener('mouseenter',()=>{
+          osc.setType('sine');
+          osc.freq(note);playEnv();
+        });
+      }
+      function createSphere2(){
+        let note=i*5
+        // let key;
+        // let noteIndex=Math.floor(Math.random()*5)
+        // let octave=Math.floor(Math.random()*5)+3
+        // if (noteIndex==1){key=notes.C[octave]}
+        // else if(noteIndex==2){key=notes.D[octave]}
+        // else if(noteIndex==3){key=notes.F[octave]}
+        // else if(noteIndex==4){key=notes.G[octave]}
+        // else if(noteIndex==4){key=notes.A[octave]};
+        // let note = key;
+        let sphereEl = document.createElement('a-box');
+        let randomColor=Math.floor(16777215-i*(200)).toString(16);
+        sphereEl.setAttribute('scale', "0.12 0.5 0.5");
+        sphereEl.setAttribute('color', '#'+randomColor);
+        // sphereEl.object3D.position.set((Math.random()*20)-10, (Math.random()*24)-12, (Math.random()*26)-13);
+        sphereEl.object3D.position.set(Math.sin(-i)*-i/(-i/2)*1.5,((Math.cos(-i)*-i/(-i/2))+2)*1.5,(-i/10)-10);
+        sphereEl.object3D.rotation.set(i,i,i)
+        spheres.push(sphereEl);
+        document.querySelector('a-scene').appendChild(sphereEl);
+        sphereEl.setAttribute('event-set__enter','_event: mouseenter; color: #FFFFFF')
+        sphereEl.setAttribute('event-set__leave','_event: mouseleave; color: #4CC309')
+        // let note=(sphereEl.object3D.position.x*sphereEl.object3D.position.y*(1000));
+        sphereEl.addEventListener('mouseenter',()=>{
+          osc.setType('sawtooth');
+          osc.freq(note);playEnv();
+        });
+      }
+      for (var i = 1; i < 100; i+=0.2) {
+        createSphere(i)
+      }
+      for (var i = 1; i < 200; i+=1) {
+        createSphere2(i)
+      }
+
+    </script>
+  </body>
+</html>
