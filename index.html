@@ -243,9 +243,26 @@
           reverb = new p5.Reverb();
           reverb.process(osc, 3, 2, reverse);
 
-          starter=createDiv('start');
-          starter.addClass("starter");
-          starter.mouseClicked(start);
+          starter=document.createElement('a-sphere');
+          starter.setAttribute('class', "starter");
+          starter.addEventListener('mouseenter',()=>{
+            start();
+          });
+          starter.setAttribute('scale', "1,1,1");
+          starter.setAttribute('position', "7,7,-7");
+
+          starter.setAttribute('color', '#f000f0');
+          document.querySelector('a-scene').appendChild(starter);
+          starter.setAttribute('event-set__enter','_event: mouseenter; color: #FFFFFF')
+          starter.setAttribute('event-set__leave','_event: mouseleave; color: #0000ff')
+          let starterText=document.createElement('a-entity');
+          starterText.setAttribute('text-geometry',"value:look at this sphere to start audiocontext")
+          starterText.setAttribute('color', '#0000ff');
+          starterText.setAttribute('rotation', '0,0,0');
+          starterText.setAttribute('position', '0,5,0');
+          starter.appendChild(starterText);
+
+
 
       }
       function draw(){
