@@ -351,12 +351,14 @@
         else if(noteIndex==8){key=notes.Eb[octave]}
         else if(noteIndex==9){key=notes.D[octave]};
         let note = key;
-        let sphereEl = document.createElement('a-box');
+        // let sphereEl = document.createElement('a-box');
+        let sphereEl = document.createElement('a-sphere');
+        sphereEl.setAttribute('radius', 0.12);
         let randomColor=Math.floor(16777215-i*(200)).toString(16);
-        sphereEl.setAttribute('scale', "0.12 0.5 0.5");
+        sphereEl.setAttribute('scale', "1 2 0.5");
         sphereEl.setAttribute('color', '#'+randomColor);
         // sphereEl.object3D.position.set((Math.random()*20)-10, (Math.random()*24)-12, (Math.random()*26)-13);
-        sphereEl.object3D.position.set(Math.sin(-i)*-i/(-i/2)*1.5,((Math.cos(-i)*-i/(-i/2))+2)*1.5,(-i/10)-10);
+        sphereEl.object3D.position.set(Math.sin(-i)*-i/(-i/2)*1.5,((Math.cos(-i*0.2)*-i/(-i/2))+2)*1.5,(-i/10)-10);
         sphereEl.object3D.rotation.set(i,i,i)
         spheres2.push(sphereEl);
         document.querySelector('a-scene').appendChild(sphereEl);
@@ -404,9 +406,11 @@
         let sphereEl = document.createElement('a-sphere');
         let randomColor=Math.floor(16777215-i*(200)).toString(16);
         sphereEl.setAttribute('radius', 0.12);
+        sphereEl.setAttribute('scale', "1.4 1.6 2");
         sphereEl.setAttribute('color', '#'+randomColor);
         // sphereEl.object3D.position.set((Math.random()*20)-10, (Math.random()*24)-12, (Math.random()*26)-13);
-        sphereEl.object3D.position.set(Math.sin(i)*i/(i/2)-20,(Math.cos(i)*i/(i/2))+2,(i/10)-20);
+        sphereEl.object3D.position.set((Math.sin(-i)*-i/(-i/2)*1.5)-20,(Math.tan(-i)*-i/(-i/2)*1.5),(-i/10)-10);
+        sphereEl.object3D.rotation.set(i,i,i)
         spheres4.push(sphereEl);
         document.querySelector('a-scene').appendChild(sphereEl);
         sphereEl.setAttribute('event-set__enter','_event: mouseenter; color: #FFFFFF')
@@ -420,7 +424,7 @@
       for (var i = 1; i < 100; i+=0.2) {
         createSphere(i)
       }
-      for (var i = 1; i < 150; i+=0.5) {
+      for (var i = 1; i < 150; i+=0.1) {
         createSphere2(i)
       }
       for (var i = 1; i < 100; i+=0.2) {
